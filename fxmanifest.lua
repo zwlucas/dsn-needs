@@ -19,6 +19,6 @@ client_scripts(
 
 server_scripts(
     '@oxmysql/lib/MySQL.lua',
-    'server/player.lua',
+    'server/needs.lua',
     'server/main.lua'
 )

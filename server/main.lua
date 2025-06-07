@@ -10,7 +10,7 @@
     - Player module is required for managing player-specific operations.
 ]]
 local QBox = exports["qbx_core"]
-local Player = require 'server.player'
+local Needs = require 'server.needs'
 
 --[[
     Initializes the database table for player needs when the MySQL connection is ready.
@@ -48,7 +48,7 @@ end)
         Used to perform actions or initialize data when a player joins the server.
 ]]
 AddEventHandler('QBCore:Server:OnPlayerLoaded', function()
-    Player(source)
+    Needs(source)
 end)
 
 --[[
@@ -62,7 +62,7 @@ end)
         source (number): The server ID of the player who is unloading.
 ]]
 AddEventHandler('QBCore:Server:OnPlayerUnload', function(source)
-    local player = Player:Get(source)
+    local player = Needs:Get(source)
     if player then
         player:Destroy()
     end
@@ -76,7 +76,7 @@ end)
 -- @param need string The type of need to be used ('hygiene' or 'sleep').
 -- @return boolean Returns true if the need was successfully used and reset, false otherwise.
 lib.callback.register('dsn-needs:server:useLocation', function(source, need)
-    local player = Player:Get(source)
+    local player = Needs:Get(source)
     if not player then return false end
 
     if not player:CanUse(need, Config.Needs[need].cooldown) then
@@ -97,7 +97,7 @@ end)
     Periodically updates player needs (hygiene and sleep) for all players.
 
     This thread runs in an infinite loop, waiting for a configured interval (`Config.UpdateInterval`)
-    between each iteration. For every player object found in `debug.getregistry()._classes.Player`:
+    between each iteration. For every player object found in `debug.getregistry()._classes.Needs`:
       - Decreases the player's hygiene and sleep needs by their respective configured decrease values.
       - Updates the player's needs using `player:SetNeed`.
       - Triggers a client event (`dsn-needs:client:updateEffects`) to update the player's effects on the client side,
@@ -118,7 +118,7 @@ CreateThread(function()
     while true do
         Wait(Config.UpdateInterval)
 
-        for _, player in pairs(debug.getregistry()._classes.Player) do
+        for _, player in pairs(debug.getregistry()._classes.Needs) do
             if player then
                 local hygiene = player.needs.hygiene - Config.Needs.hygiene.decrease
                 local sleep = player.needs.sleep - Config.Needs.sleep.decrease
