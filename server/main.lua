@@ -35,17 +35,19 @@ end)
 
 --[[
     Event Handler: 'QBCore:Server:OnPlayerLoaded'
-    Triggered when a player has successfully loaded into the server.
+    This event is triggered when a player has successfully loaded into the server.
 
     Parameters:
-        player (table): The player object containing information about the loaded player.
+        None explicitly, but 'source' is implicitly available and refers to the player's server ID.
 
-    Description:
-        This event handler is registered to execute when the 'QBCore:Server:OnPlayerLoaded' event is fired.
-        Upon triggering, it calls the Player function with the current source as an argument.
-        (Note: The usage of Player(source) assumes a function named Player is defined elsewhere in the codebase.)
+    Actions:
+        Calls the Player function with the player's server ID (source) as an argument.
+        (Note: The Player function should be defined elsewhere in the codebase.)
+
+    Usage:
+        Used to perform actions or initialize data when a player joins the server.
 ]]
-AddEventHandler('QBCore:Server:OnPlayerLoaded', function(player)
+AddEventHandler('QBCore:Server:OnPlayerLoaded', function()
     Player(source)
 end)
 

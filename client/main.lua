@@ -13,7 +13,7 @@ local showingWarning = {
 
 --[[
     Event Handler: 'dsn-needs:client:updateEffects'
-    -----------------------------------------------
+    
     Handles updates to player needs effects such as hygiene and sleep.
 
     Parameters:
